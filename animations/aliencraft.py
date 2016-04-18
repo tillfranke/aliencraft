@@ -53,7 +53,6 @@ def main():
                 ship.handle_events(e)
 
         y += ship.vy
-        print(y, 10*len(asteroids.sprites()))
         if y  > 10*len(asteroids.sprites()) and random.random() < 0.5:
             asteroids.add(Asteroid())     
         
