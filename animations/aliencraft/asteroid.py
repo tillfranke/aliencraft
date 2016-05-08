@@ -1,21 +1,21 @@
 from pygame.sprite import Sprite
+from aliencraft.space_object import SpaceObject
 import pygame
 import os.path
 import numpy.random as random
 
 
 
-class Asteroid(Sprite):
+class Asteroid(SpaceObject):
     """Asteroid: a rock hurling through space"""
     vy_max = 20
     
 
     @classmethod
-    def init(cls,SIZE):
-        """load the asteroid images"""
-        cls.SIZE = SIZE
-        (cls.X, cls.Y) = SIZE
+    def initialize(cls,SIZE):
+        SpaceObject.init(SIZE)
 
+        """load the asteroid images"""
         # load three sizes of asteroids and scale to a good size
         cls.images = []
         for i in (1,2,3):
@@ -26,21 +26,14 @@ class Asteroid(Sprite):
             cls.images.append(image)
 
     def __init__(self):
-        Sprite.__init__(self)
 
         # 3 sizes of asteroids, load the right image
         self.asteroid_type = random.randint(3)
         self.image = Asteroid.images[self.asteroid_type]
         self.rect = self.image.get_rect()
 
-        # we start just outside the top of the screen (y=0)
-        self.y = 0.0 - self.rect.height    
+        SpaceObject.__init__(self)
         
-        # make sure we stay within the screen in x direction. 
-        # our x coordinate is on the center of the rectangle, so we compute the half
-        # of the rectangle width   
-        halfwidth = self.rect.width / 2
-        self.x = halfwidth + float(random.randint(self.X - halfwidth))
         
         # take a random number for the vertical speed
         self.vy = random.random() * self.vy_max + 4.0
